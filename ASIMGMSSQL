@@ -45,7 +45,7 @@ step 2: for activity java file
                 {
                     ImageView imageView;
                     imageView = (ImageView) findViewById(R.id.PIView);
-                    imageView.setImageBitmap(con.getimgfrommssql(resultSet.getBytes(2)));
+                    imageView.setImageBitmap(getimgfrommssql(resultSet.getBytes(2)));
                 }
                 catch (SQLException e)
                 {
@@ -65,3 +65,13 @@ step 2: for activity java file
         }
 
 
+
+Step 3 : getimgfrommssql(resultSet.getBytes(2)) call
+
+ public Bitmap getimgfrommssql(byte[] bv)
+       {
+              String encodedImageString = Base64.encodeToString(bv, Base64.DEFAULT);
+              byte[] bytarray = Base64.decode(encodedImageString, Base64.DEFAULT);
+              Bitmap bmimage = BitmapFactory.decodeByteArray(bytarray, 0, bytarray.length);
+              return bmimage;
+       }
