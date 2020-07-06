@@ -1,0 +1,67 @@
+step 1: for activity xml file
+
+<ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="45dp"
+                        android:id="@+id/PIView"
+                        android:background="@drawable/cbggray"
+                        android:src="@drawable/ic_announcement_black_24dp"
+                        />
+step 2: for activity java file
+
+
+        String emob=null, ename=null;
+        String sp=null;
+        if (connection != null) {
+            Statement statement = null;
+            try {
+                statement = connection.createStatement();
+            } catch (SQLException e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                //e.printStackTrace();
+            }
+
+            ResultSet resultSet = null;
+            try {
+                resultSet = statement.executeQuery("select EmployeeId, EmpPic from Employees where EmpMobile='"+empmobno+"'" );
+            } catch (SQLException e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                //e.printStackTrace();
+
+            }
+            int i = 0;
+            while (true) {
+                try {
+                    if (!resultSet.next()) {
+                        //Toast.makeText(getApplicationContext(), "Wrong or Deactivated School Code", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                } catch (SQLException e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    //  e.printStackTrace();
+                }
+
+                try
+                {
+                    ImageView imageView;
+                    imageView = (ImageView) findViewById(R.id.PIView);
+                    imageView.setImageBitmap(con.getimgfrommssql(resultSet.getBytes(2)));
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+
+                i++;
+            }
+
+            if (i == 0) {
+                Toast.makeText(getApplicationContext(), "Unauthorized Mobile No.", Toast.LENGTH_SHORT).show();
+            }
+
+        } else {
+
+            Toast.makeText(getApplicationContext(), "Connection is null", Toast.LENGTH_SHORT).show();
+        }
+
+
